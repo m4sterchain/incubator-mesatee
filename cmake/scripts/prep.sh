@@ -75,6 +75,7 @@ function build_edl() {
 
         # $FILE_NAME_t.c to $FILE_NAME_t.o
         ${CMAKE_C_COMPILER} ${SGX_TRUSTED_CFLAGS} -c "${fname}_t.c" -o "lib${fname}_t.o"
+        ${CMAKE_AR} rcsD "lib${fname}_t.a" "lib${fname}_t.o"
     done
 }
 

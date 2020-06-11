@@ -1,0 +1,76 @@
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+enclave {
+    include "sys/socket.h"
+    include "inc/stat.h"    
+    include "inc/dirent.h"
+    include "netdb.h"
+    include "time.h"
+    include "pwd.h"
+    include "signal.h"
+    include "sgx_quote.h"
+
+    trusted {
+        public uint32_t ecall_ipc_entry_point(uint32_t cmd,
+                                              [in, size=in_len] const uint8_t* in_buf,
+                                              size_t in_len,
+                                              [out, size=out_maxlen] uint8_t* out_buf,
+                                             size_t out_maxlen,
+                                              [out] size_t *real_out_len);
+        public void t_global_init_ecall(uint64_t id, [in, size=len] const uint8_t *path, size_t len); // t_global_init_ecall; Ecall from rust_sgx_sdk_edl/sgx_tstd.edl
+    };
+
+    untrusted {
+        size_t u_writev_ocall([out] int *error, int fd, [in, count=iovcnt] const struct iovec *iov, int iovcnt); // Ocall from rust_sgx_sdk_edl/sgx_fd.edl
+        size_t u_write_ocall([out] int *error, int fd, [user_check] const void *buf, size_t count); // Ocall from rust_sgx_sdk_edl/sgx_fd.edl
+        int u_thread_wait_event_ocall([out] int *error, [user_check] const void *tcs, [in] const struct timespec *timeout); // Ocall from rust_sgx_sdk_edl/sgx_tstd.edl
+        int u_thread_setwait_events_ocall([out] int *error, [user_check] const void *waiter_tcs, [user_check] const void *self_tcs, [in] const struct timespec *timeout); // Ocall from rust_sgx_sdk_edl/sgx_tstd.edl
+        int u_thread_set_multiple_events_ocall([out] int *error, [in, count=total] const void **tcss, int total); // Ocall from rust_sgx_sdk_edl/sgx_tstd.edl
+        int u_thread_set_event_ocall([out] int *error, [user_check] const void *tcs); // Ocall from rust_sgx_sdk_edl/sgx_tstd.edl
+        int u_stat64_ocall([out] int *error, [in, string] const char *path, [out] struct stat64_t *buf); // Ocall from rust_sgx_sdk_edl/sgx_file.edl
+        int u_socket_ocall([out] int *error, int domain, int ty, int protocol); // Ocall from rust_sgx_sdk_edl/sgx_socket.edl
+        size_t u_send_ocall([out] int *error, int sockfd, [user_check] const void *buf, size_t len, int flags); // Ocall from rust_sgx_sdk_edl/sgx_socket.edl
+        size_t u_recv_ocall([out] int *error, int sockfd,[user_check] void *buf, size_t len, int flags); // Ocall from rust_sgx_sdk_edl/sgx_socket.edl
+        size_t u_readv_ocall([out] int *error, int fd, [in, count=iovcnt] const struct iovec *iov, int iovcnt); // Ocall from rust_sgx_sdk_edl/sgx_fd.edl
+        int u_prctl_ocall([out] int *error, int option, unsigned long arg2, unsigned long arg3, unsigned long arg4, unsigned long arg5); // Ocall from rust_sgx_sdk_edl/sgx_sys.edl
+        int u_open_ocall([out] int *error, [in, string] const char *pathname, int flags); // Ocall from rust_sgx_sdk_edl/sgx_file.edl
+        int u_nanosleep_ocall([out]int *error, [in]const struct timespec *req, [out]struct timespec *rem); // Ocall from rust_sgx_sdk_edl/sgx_thread.edl
+        int u_munmap_ocall([out] int *error, [user_check] void *start, size_t length); // Ocall from rust_sgx_sdk_edl/sgx_mem.edl
+        void *u_mmap_ocall([out] int *error, [user_check] void *start, size_t length, int prot, int flags, int fd, int64_t offset); // Ocall from rust_sgx_sdk_edl/sgx_mem.edl
+        void *u_malloc_ocall([out] int *error, size_t size); // Ocall from rust_sgx_sdk_edl/sgx_mem.edl
+        int u_lstat_ocall([out] int *error, [in, string] const char *path, [out] struct stat_t *buf); // Ocall from rust_sgx_sdk_edl/sgx_file.edl
+        char *u_getenv_ocall([in, string] const char *name); // Ocall from rust_sgx_sdk_edl/sgx_env.edl
+        int u_getaddrinfo_ocall([out] int *error, [in, string] const char *node, [in, string] const char *service, [in] const struct addrinfo *hints, [out] struct addrinfo **res); // Ocall from rust_sgx_sdk_edl/sgx_net.edl
+        char *u_gai_strerror_ocall(int errcode); // Ocall from rust_sgx_sdk_edl/sgx_net.edl
+        int u_fstat_ocall([out] int *error, int fd, [out] struct stat_t *buf); // Ocall from rust_sgx_sdk_edl/sgx_file.edl
+        void u_freeaddrinfo_ocall([user_check] struct addrinfo *res); // Ocall from rust_sgx_sdk_edl/sgx_net.edl
+        void u_free_ocall([user_check] void *p); // Ocall from rust_sgx_sdk_edl/sgx_mem.edl
+        int u_fcntl_arg1_ocall([out] int *error, int fd, int cmd, int arg); // Ocall from rust_sgx_sdk_edl/sgx_fd.edl
+        int u_fcntl_arg0_ocall([out] int *error, int fd, int cmd); // Ocall from rust_sgx_sdk_edl/sgx_fd.edl
+        int u_connect_ocall([out] int *error, int sockfd, [in, size=addrlen] const struct sockaddr *addr, socklen_t addrlen); // Ocall from rust_sgx_sdk_edl/sgx_socket.edl
+        int u_close_ocall([out] int *error, int fd); // Ocall from rust_sgx_sdk_edl/sgx_fd.edl
+        int u_clock_gettime_ocall([out] int *error, int clk_id, [out] struct timespec *tp); // Ocall from rust_sgx_sdk_edl/sgx_time.edl
+        [cdecl] void sgx_oc_cpuidex([out] int cpuinfo[4], int leaf, int subleaf); // Ocall from intel_sgx_sdk_include/sgx_tstdc.edl
+        [cdecl] int pthread_wakeup_ocall(unsigned long long waiter); // Ocall from rust_sgx_sdk_edl/intel/sgx_pthread.edl
+        [cdecl] int pthread_wait_timeout_ocall (unsigned long long waiter, unsigned long long timeout); // Ocall from rust_sgx_sdk_edl/intel/sgx_pthread.edl
+        [cdecl] int pthread_create_ocall(unsigned long long self); // Ocall from rust_sgx_sdk_edl/intel/sgx_pthread.edl
+        sgx_status_t ocall_sgx_init_quote([out] sgx_att_key_id_t *p_att_key_id, [out] sgx_target_info_t *p_target_info); // Ocall from teaclave_edl/Enclave_common.edl
+        sgx_status_t ocall_sgx_get_quote_size([in] sgx_att_key_id_t *p_att_key_id, [out] uint32_t *p_quote_size); // Ocall from teaclave_edl/Enclave_common.edl
+        sgx_status_t ocall_sgx_get_quote([in] sgx_report_t *p_report, [in] sgx_att_key_id_t *p_att_key_id, [in, out] sgx_qe_report_info_t *p_qe_report_info, [out, size=quote_size] uint8_t *p_quote, uint32_t quote_size); // Ocall from teaclave_edl/Enclave_common.edl
+    };
+};

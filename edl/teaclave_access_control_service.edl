@@ -16,8 +16,13 @@
 // under the License.
 
 enclave {
-    from "Enclave_common.edl" import *;
+    from "teaclave_common.edl" import *;
+
     untrusted {
-        uint32_t ocall_handle_file_request([in, size=buf_size] uint8_t *in_buf, uint32_t buf_size);
+        int u_setsockopt_ocall([out] int *error, int sockfd, int level, int optname, [in, size=optlen] const void *optval, socklen_t optlen); // Ocall from rust_sgx_sdk_edl/sgx_socket.edl
+        int u_sched_yield_ocall([out]int *error); // Ocall from rust_sgx_sdk_edl/sgx_thread.edl
+        int u_listen_ocall([out] int *error, int sockfd, int backlog); // Ocall from rust_sgx_sdk_edl/sgx_socket.edl
+        int u_bind_ocall([out] int *error, int sockfd, [in, size=addrlen] const struct sockaddr *addr, socklen_t addrlen); // Ocall from rust_sgx_sdk_edl/sgx_socket.edl
+        int u_accept4_ocall([out] int *error, int sockfd, [in, out, size=addrlen_in] struct sockaddr *addr, socklen_t addrlen_in, [out] socklen_t *addrlen_out, int flags); // Ocall from rust_sgx_sdk_edl/sgx_socket.edl
     };
 };

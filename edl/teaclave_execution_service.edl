@@ -1,0 +1,41 @@
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+
+enclave {
+    from "teaclave_common.edl" import *;
+
+    untrusted {
+        int u_symlink_ocall([out] int *error, [in, string] const char *path1, [in, string] const char *path2); // Ocall from rust_sgx_sdk_edl/sgx_file.edl
+        int32_t u_sgxprotectedfs_remove([in, string] const char* filename); // Ocall from intel_sgx_sdk_include/sgx_tprotected_fs.edl
+        void* u_sgxprotectedfs_recovery_file_open([in, string] const char* filename); // Ocall from intel_sgx_sdk_include/sgx_tprotected_fs.edl
+        uint8_t u_sgxprotectedfs_fwrite_recovery_node([user_check] void* f, [in, count=data_length] uint8_t* data, uint32_t data_length); // Ocall from intel_sgx_sdk_include/sgx_tprotected_fs.edl
+        int32_t u_sgxprotectedfs_fwrite_node([user_check] void* f, uint64_t node_number, [in, size=node_size] uint8_t* buffer, uint32_t node_size); // Ocall from intel_sgx_sdk_include/sgx_tprotected_fs.edl
+        int32_t u_sgxprotectedfs_fread_node([user_check] void* f, uint64_t node_number, [out, size=node_size] uint8_t* buffer, uint32_t node_size); // Ocall from intel_sgx_sdk_include/sgx_tprotected_fs.edl
+        uint8_t u_sgxprotectedfs_fflush([user_check] void* f); // Ocall from intel_sgx_sdk_include/sgx_tprotected_fs.edl
+        int32_t u_sgxprotectedfs_fclose([user_check] void* f); // Ocall from intel_sgx_sdk_include/sgx_tprotected_fs.edl
+        void* u_sgxprotectedfs_exclusive_file_open([in, string] const char* filename, uint8_t read_only, [out] int64_t* file_size, [out] int32_t* error_code); // Ocall from intel_sgx_sdk_include/sgx_tprotected_fs.edl
+        int32_t u_sgxprotectedfs_do_file_recovery([in, string] const char* filename, [in, string] const char* recovery_filename, uint32_t node_size); // Ocall from intel_sgx_sdk_include/sgx_tprotected_fs.edl
+        uint8_t u_sgxprotectedfs_check_if_file_exists([in, string] const char* filename); // Ocall from intel_sgx_sdk_include/sgx_tprotected_fs.edl
+        size_t u_read_ocall([out] int *error, int fd, [user_check] void *buf, size_t count); // Ocall from rust_sgx_sdk_edl/sgx_fd.edl
+        int u_open64_ocall([out] int *error, [in, string] const char *path, int oflag, int mode); // Ocall from rust_sgx_sdk_edl/sgx_file.edl
+        int u_mkdir_ocall([out] int *error, [in, string] const char *pathname, uint32_t mode); // Ocall from rust_sgx_sdk_edl/sgx_file.edl
+        [cdecl] int sgx_thread_wait_untrusted_event_ocall([user_check] const void *self); // Ocall from intel_sgx_sdk_include/sgx_tstdc.edl
+        [cdecl] int sgx_thread_set_untrusted_event_ocall([user_check] const void *waiter); // Ocall from intel_sgx_sdk_include/sgx_tstdc.edl
+        uint32_t ocall_handle_file_request([in, size=buf_size] uint8_t *in_buf, uint32_t buf_size); // Ocall from teaclave_edl/Enclave_fa.edl
+    };
+};

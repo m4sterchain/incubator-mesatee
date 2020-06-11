@@ -73,10 +73,15 @@ def pkg_path_2_category(pkg_path):
         sys.exit(-1)
 
 
-DEFAULT_EDL_LIB = "Enclave_common_t"
+DEFAULT_EDL_LIB = "teaclave_test_t"
 PKG_NAME_TO_EDL_LIB = {
-    "teaclave_unit_tests_enclave": "Enclave_fa_t",
-    "teaclave_execution_service_enclave": "Enclave_fa_t",
+    "teaclave_execution_service_enclave": "teaclave_execution_service_t",
+    "teaclave_frontend_service_enclave": "teaclave_frontend_service_t",
+    "teaclave_management_service_enclave": "teaclave_management_service_t",
+    "teaclave_access_control_service_enclave": "teaclave_access_control_service_t",
+    "teaclave_authentication_service_enclave": "teaclave_authentication_service_t",
+    "teaclave_scheduler_service_enclave": "teaclave_scheduler_service_t",
+    "teaclave_storage_service_enclave": "teaclave_storage_service_t",
 }
 
 

@@ -37,9 +37,9 @@ fn main() {
 
     println!("cargo:rustc-link-search=native={}", out_dir.display());
     if let Ok(edl_dir) = env::var("TEACLAVE_EDL_DIR") {
-        println!("cargo:rerun-if-changed={}/Enclave_common.edl", edl_dir);
+        println!("cargo:rerun-if-changed={}/teaclave_storage_service.edl", edl_dir);
     }
-    println!("cargo:rustc-link-lib=static=Enclave_common_u");
+    println!("cargo:rustc-link-lib=static=teaclave_storage_service_u");
 
     let is_sim = match env::var("SGX_MODE") {
         Ok(ref v) if v == "SW" => true,

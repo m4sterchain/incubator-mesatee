@@ -33,6 +33,7 @@ fn main() {
         println!("cargo:rerun-if-changed={}/Enclave_common.edl", edl_dir);
     }
     println!("cargo:rustc-link-search=native={}/lib64", sdk_dir);
+    #[cfg(not(feature="mesalock_sgx"))] 
     println!("cargo:rustc-link-lib=static=sgx_uprotected_fs");
 
     let is_sim = match env::var("SGX_MODE") {
