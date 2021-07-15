@@ -213,6 +213,7 @@ Apache License, Version 2.0
 
 third-party/crates-io
 third-party/crates-sgx
+third_party/wasm-micro-runtime
 
 
 BSD 3-Clause License

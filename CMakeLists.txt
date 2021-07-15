@@ -24,9 +24,9 @@ include(ExternalProject)
 find_package(Git)
 find_package(OpenSSL)
 check_exe_dependencies(rustup pypy)
-pkg_check_modules(INTEL_SGX_SDK QUIET libsgx_urts=2.9.101.2)
+pkg_check_modules(INTEL_SGX_SDK QUIET libsgx_urts>=2.12.100.3)
 if(NOT INTEL_SGX_SDK_FOUND)
-  message(FATAL_ERROR "Intel SGX SDK (version 2.9.1) is not found or version not matched.")
+  message(FATAL_ERROR "Intel SGX SDK (version 2.12.100.3) is not found or version not matched.")
 endif()
 
 # ====== VARIABLES FOR CMAKE -D{VAR}=VAL CONFIGURATION BEGIN ======
@@ -35,7 +35,7 @@ set_strvar_from_env_or(RUSTFLAGS "" "Rust flags")
 set_strvar_from_env_or(TEACLAVE_CMAKE_DBG ""
                        "set to turn on debug message for cmake")
 set(MESAPY_VERSION 947fb3f598eede83ba0e33b5b5655b9a9597c2d8)
-set(RUSTUP_TOOLCHAIN "nightly-2020-04-07")
+set(RUSTUP_TOOLCHAIN "nightly-2020-10-25")
 option(COV "Turn on/off coverage" OFF)
 option(OFFLINE "Turn on/off cargo offline" ON)
 option(TEST_MODE "Turn on/off test mode" OFF)
@@ -151,6 +151,13 @@ set(MESAPY_OUTPUTS
   ${TEACLAVE_OUT_DIR}/libsgx_ulibc.a
   ${TEACLAVE_OUT_DIR}/ffi.o
 )
+
+# WAMR library
+
+set(WAMR_OUTPUTS
+  ${TEACLAVE_OUT_DIR}/libvmlib.a
+)
+
 if(USE_PREBUILT_MESAPY)
 add_custom_command(
   OUTPUT ${MESAPY_OUTPUTS}
@@ -172,8 +179,28 @@ else()
         ${TEACLAVE_OUT_DIR}
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/third_party/mesapy)
 endif()
+
+ExternalProject_Add(wamr_teaclave
+  SOURCE_DIR ${WAMR_TEACLAVE_ROOT_DIR}
+  BINARY_DIR ${WAMR_TEACLAVE_ROOT_DIR}/build
+  INSTALL_COMMAND ""
+  LOG_BUILD 1
+)
+
+add_custom_command(
+  OUTPUT ${WAMR_OUTPUTS}
+  DEPENDS wamr_teaclave
+  COMMAND
+    cp ${WAMR_TEACLAVE_ROOT_DIR}/build/libvmlib.a ${TEACLAVE_OUT_DIR}
+  WORKING_DIRECTORY ${WAMR_TEACLAVE_ROOT_DIR}/build
+  )
+
 add_custom_target(mesapy
   DEPENDS ${MESAPY_OUTPUTS}
+  )
+
+add_custom_target(wamr
+  DEPENDS ${WAMR_TEACLAVE_ROOT_DIR}/CMakeLists.txt ${WAMR_OUTPUTS}
   )
 
 # mesapy components
@@ -213,6 +240,7 @@ foreach(_i RANGE ${SGX_LIB_LAST_INDEX})
     DEPENDS
     prep
     mesapy
+    wamr
     pycomponent
     INSTALL_DIR
     ${TEACLAVE_INSTALL_DIR}/${_category}

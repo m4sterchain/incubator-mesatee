@@ -3,12 +3,12 @@ permalink: /docs/access-control
 ---
 
 # Access Control in Teaclave
-Access control in multi-party computation, by its nature, is set-centric.
-Unlike in traditional settings where only one entitiy, group, or role is
-involved in an action, in multi-party computation tasks an access is aproved or
-denified by combinging the decisions of all stakeholders. Ownership is also
-set-like, because the result of a joint computation task very likely belongs to
-all parties that have provided data.
+Access control in multi-party computation, by its nature, is set-centric. Unlike
+in traditional settings where only one entity, group, or role is involved in an
+action, in multi-party computation tasks an access is approved or denied by
+combining the decisions of all stakeholders. Ownership is also set-like, because
+the result of a joint computation task very likely belongs to all parties that
+have provided data.
 
 We found that access control models in conventional systems like RBAC and ABAC
 are not powerful enough to govern data usages in Teaclave. Therefore, we
@@ -24,9 +24,9 @@ The file has three sections:
 
 Before diving into the details about how our access control model works, we
 recommend readers learn about [logic programming](https://en.wikipedia.org/wiki/Logic_programming)
-first, because
-our model configuration language is actually a home-baked tiny logic
-programming language.
+first, because our
+model configuration language is actually a home-baked tiny logic programming
+language.
 
 ### request
 A request is a query that should be answered by the access control service. The
@@ -39,7 +39,7 @@ task_access_data = task, data
 ```
 
 defines a request called `task_access_data` which contains two fields named
-`usr` and `data`. This request can mean a task with the id `task` wants to
+`task` and `data`. This request can mean a task with the id `task` wants to
 access a piece of data hosted by Teaclave whose id is `data`.
 
 ### term
@@ -93,7 +93,7 @@ of `data_owner(task_access_data.data, _)` is a subset of the `usr` domain,
 where each value `u` in the fact meets the condition that
 
 ```
-data_owern task_access_data.data u
+data_owner task_access_data.data u
 ```
 
 is in the terms database. `_` is called the query wild card and `<=` is the

@@ -31,7 +31,6 @@ member of regular committers or PPMC of Teaclave.
 
 - [Mingshen Sun](https://github.com/mssun) (PPMC)
 - [Pei Wang](https://github.com/uraj) (PPMC)
-- [Ran Duan](https://github.com/volcano0dr/)
 - [Rundong Zhou](https://github.com/rdzhou) (PPMC)
 - [Tao Wei](https://github.com/LenxWei) (PPMC)
 - [Tongxin Li](https://github.com/litongxin1991) (PPMC)
@@ -39,22 +38,26 @@ member of regular committers or PPMC of Teaclave.
 - [Yu Ding](https://github.com/dingelish) (PPMC)
 - [Yulong Zhang](https://github.com/yulongzhang) (PPMC)
 - [Zhaofeng Chen](https://github.com/m4sterchain) (PPMC)
+- [Hongbo Chen](https://github.com/ya0guang)
+- [Ran Duan](https://github.com/volcano0dr/)
 
 ## Contributors
 
 Teaclave is a community project and is very thankful for the many community
 contributions it receives.
 
-List of external contributors of Teaclave and Teaclave SGX SDK (in alphabetical order):
+List of external contributors of Teaclave, Teaclave SGX SDK, and Teaclave
+TrustZone SDK (in alphabetical order):
   - [Akhil Velagapudi](https://github.com/akhilles)
   - [Bing Duan](https://github.com/duanbing)
+  - [BruceFan](https://github.com/fanrong1992)
   - [BurtonQin](https://github.com/BurtonQin)
   - [Cheng XU](https://github.com/xu-cheng)
   - [David Phan](https://github.com/davidp94)
-  - [DemesneGH](https://github.com/DemesneGH)
   - [Elichai Turkel](https://github.com/elichai)
   - [GeminiCarrie](https://github.com/GeminiCarrie)
   - [Greg Kapka](https://github.com/gskapka)
+  - [He Sun](https://github.com/henrysun007)
   - [Hongbin Mao](https://github.com/hello2mao)
   - [Jackson Owens](https://github.com/jbowens)
   - [Jimmy Casey](https://github.com/jimmycasey)
@@ -71,9 +74,11 @@ List of external contributors of Teaclave and Teaclave SGX SDK (in alphabetical 
   - [Sythanos](https://github.com/sythanos)
   - [T0day](https://github.com/hi-T0day)
   - [Tianjia Zhang](https://github.com/uudiin)
+  - [Yuan Zhuang](https://github.com/DemesneGH)
   - [Zha0Chan](https://github.com/Zha0Chan)
   - [akoskinas](https://github.com/akoskinas)
   - [algon](https://github.com/algon-320)
+  - [clauverjat](https://github.com/clauverjat)
   - [czzmmc](https://github.com/czzmmc)
   - [devashishdxt](https://github.com/devashishdxt)
   - [dtorfs](https://github.com/dtorfs)
@@ -92,3 +97,4 @@ List of external contributors of Teaclave and Teaclave SGX SDK (in alphabetical 
 More people tracked in GitHub:
   - [Teaclave](https://github.com/apache/incubator-teaclave/graphs/contributors)
   - [Teaclave SGX SDK](https://github.com/apache/incubator-teaclave-sgx-sdk/graphs/contributors)
+  - [Teaclave TrustZone SDK](https://github.com/apache/incubator-teaclave-trustzone-sdk/graphs/contributors)

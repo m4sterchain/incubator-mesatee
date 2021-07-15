@@ -9,6 +9,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: 'true'
       - name: Install dependencies
         run: |
           brew install cmake openssl
@@ -26,11 +28,9 @@ jobs:
           cd sdk/swift/TeaclaveClientSDK && xcodebuild -scheme TeaclaveClientSDK
   sim-debug-ubuntu-1804:
     runs-on: ubuntu-18.04
-    container: teaclave/teaclave-build-ubuntu-1804-sgx-2.9.1:0.1.2
+    container: teaclave/teaclave-build-ubuntu-1804-sgx-2.14:0.1.0
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: 'true'
       - name: Setting up $HOME
         run: |
           cp /root/.bashrc $HOME/.bashrc &&
@@ -45,6 +45,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Debug -DSGX_SIM_MODE=ON -DTEST_MODE=ON ..
       - name: Building
         run: |
+          . /opt/sgxsdk/environment &&
           . ~/.cargo/env &&
           cd build &&
           make VERBOSE=1
@@ -60,11 +61,9 @@ jobs:
 
   format:
     runs-on: ubuntu-18.04
-    container: teaclave/teaclave-build-ubuntu-1804-sgx-2.9.1:0.1.2
+    container: teaclave/teaclave-build-ubuntu-1804-sgx-2.14:0.1.0
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: 'true'
       - name: Setting up $HOME
         run: |
           cp /root/.bashrc $HOME/.bashrc &&
@@ -83,11 +82,9 @@ jobs:
           cd build && make check
   lint:
     runs-on: ubuntu-18.04
-    container: teaclave/teaclave-build-ubuntu-1804-sgx-2.9.1:0.1.2
+    container: teaclave/teaclave-build-ubuntu-1804-sgx-2.14:0.1.0
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: 'true'
       - name: Setting up $HOME
         run: |
           cp /root/.bashrc $HOME/.bashrc &&
@@ -102,5 +99,6 @@ jobs:
           cmake -DRUSTFLAGS="-D warnings" -DTEST_MODE=ON ..
       - name: Code linting with Clippy
         run: |
+          . /opt/sgxsdk/environment &&
           . /root/.cargo/env &&
           cd build && make CLP=1

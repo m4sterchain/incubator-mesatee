@@ -10,6 +10,7 @@ permalink: /docs/
 - [Function in Python](functions-in-python.md)
 - [How to Add Built-in Functions](builtin-functions.md)
 - [Deploying Teaclave on Azure Confidential Computing VM](azure-confidential-computing.md)
+- [Executing WebAssembly in Teaclave](executing-wasm.md)
 
 ## Design
 
@@ -18,6 +19,7 @@ permalink: /docs/
 - [Mutual Attestation: Why and How](mutual-attestation.md)
 - [Threat Model](threat-model.md)
 - [Teaclave Service Internals](service-internals.md)
+- [Adding Executors](adding-executors.md)
 - [Papers, Talks, and Related Articles](papers-talks.md)
 
 ## Contribute

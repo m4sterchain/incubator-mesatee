@@ -46,6 +46,8 @@ class UserData:
         self.key = key
 
 
+# If you're using `docker-compose` to start the Teaclave server containers,
+# please change `localhost` to `teaclave-file-service`
 INPUT_FILE_URL_PREFIX = "http://localhost:6789/fixtures/functions/ordered_set_intersect/"
 OUTPUT_FILE_URL_PREFIX = "http://localhost:6789/fixtures/functions/ordered_set_intersect/"
 

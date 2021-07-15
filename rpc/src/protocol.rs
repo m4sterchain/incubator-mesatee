@@ -15,6 +15,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
+#![allow(clippy::nonstandard_macro_braces)]
+#![allow(clippy::unknown_clippy_lints)]
+
 use log::trace;
 use serde::{Deserialize, Serialize};
 use std::io;
@@ -103,7 +106,7 @@ where
         let buf_len = send_buf.len() as u64;
         let header = buf_len.to_be_bytes();
 
-        self.transport.write(&header)?;
+        self.transport.write_all(&header)?;
         self.transport.write_all(&send_buf)?;
         self.transport.flush()?;
 
